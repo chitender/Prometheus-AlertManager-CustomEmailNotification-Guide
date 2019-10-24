@@ -9,6 +9,7 @@ Below example is to customise the email notification to include specific labels(
 ## Steps
 
 1. below is the sample prometheus rule which checks for disk utilisation.
+```
   - alert: Disk Used
     expr: 100 * (1 - (node_filesystem_free_bytes / node_filesystem_size_bytes)) > 60
     for: 5m
@@ -20,6 +21,7 @@ Below example is to customise the email notification to include specific labels(
       identifier: '{{ $labels.instance }}'
       description: 'The Disk Utilization for Disk {{ $labels.mountpoint }} is high on {{ $labels.instance }} in project {{ $labels.Project }} is {{ $value | humanize }} percent on {{ $labels.Environment }} environment'
       graph: 'https://monitoring.organisation.com/grafana/d/O6JPd-DWk/node-exporter-full?orgId=1&var-Project={{ $labels.Project }}&var-job={{ $labels.job}} &var-name={{ $labels.nodename }}&var-node={{ $labels.nodename }}&var-port=9100&fullscreen&panelId=152'
+```
 
 2. prepare your custom Html template file.
     here custom_email.tmpl is as an example, where we only included the specific labels( Description, Project, Environment, Instance) and Annotations in the email notifications.
@@ -28,10 +30,12 @@ Below example is to customise the email notification to include specific labels(
     at the top in custom_email.tmpl we haved defined the template name ( {{ define "email.CUSTOM.html" }}) which we will use in the alertmanager config file.
 
 3. now we will include this custom email template in our alertmanager config so that Alertmanager will recognise this          template. for this we will use template module. like below example:
+```
     templates:
     - '/prometheus/alertmanager/etc/alertmanager/templates/custom_email.tmpl'
-
+```
 4. now we will add the receiver in our alertmanager.yml to who we want to send custom email notifications. below is a          sample config.
+```
     - name: Devops-test
       email_configs:
       - to: chitenderkumar.16@gmail.com
@@ -43,8 +47,10 @@ Below example is to customise the email notification to include specific labels(
         headers:
           Subject: ' {{ .GroupLabels.subject }} '
         html: '{{ template "email.CUSTOM.html" . }}'
+```
 
 5. once we are done with above changes. our alertmanager.yml will look something like below:
+```
     global:
     route:
       group_by: ['alertname', 'Project','instance', 'severity', 'Environment', 'Name', 'subject', 'job', 'nodename']
@@ -66,9 +72,12 @@ Below example is to customise the email notification to include specific labels(
         html: '{{ template "email.chitender.html" . }}'
     templates:
     - '/prometheus/alertmanager/etc/alertmanager/templates/custom_email.tmpl'
+```
 
 6. now reload your alertmanager. i do like below:
+ ```
     curl -X POST http://localhost:9093/-/reload
+ ```
 
 
 ## Usage
