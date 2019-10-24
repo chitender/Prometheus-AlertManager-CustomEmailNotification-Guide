@@ -23,7 +23,7 @@ Below example is to customise the email notification to include specific labels(
 
 2. prepare your custom Html template file.
     here custom_email.tmpl is as an example, where we only included the specific labels( Description, Project, Environment, Instance) and Annotations in the email notifications.
-    custom_email.tmpl [here] (custom_email.tmpl)
+    [custom_email.tmpl] (./custom_email.tmpl)
 
     at the top in custom_email.tmpl we haved defined the template name ( {{ define "email.CUSTOM.html" }}) which we will use in the alertmanager config file.
 
