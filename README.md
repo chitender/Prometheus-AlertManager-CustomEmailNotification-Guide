@@ -39,11 +39,11 @@ Below example is to customise the email notification to include specific labels(
     - name: Devops-test
       email_configs:
       - to: chitenderkumar.16@gmail.com
-        from: chitender.kumar@delhivery.com (Prometheus-Dev-Alerts)
+        from: chitender.kumar@xyz.com (Prometheus-Dev-Alerts)
         smarthost: smtp.gmail.com:587
-        auth_identity: chitender.kumar@delhivery.com
-        auth_username: chitender.kumar@delhivery.com
-        auth_password: fhkfkfltmmgwtsuh
+        auth_identity: chitender.kumar@xyz.com
+        auth_username: chitender.kumar@xyz.com
+        auth_password: XXXXXXXXXXXXXXX
         headers:
           Subject: ' {{ .GroupLabels.subject }} '
         html: '{{ template "email.CUSTOM.html" . }}'
